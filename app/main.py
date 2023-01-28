@@ -49,7 +49,7 @@ def create_request_for_user(
     return create_request(db=db, request=request, user_id=user_id)
 
 
-@app.get("/items/", response_model=list[Request])
+@app.get("/requests/", response_model=list[Request])
 def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     items = get_requests(db, skip=skip, limit=limit)
     return items
