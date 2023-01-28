@@ -2,7 +2,7 @@ from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 
 from app.crud.user import get_users, get_user, get_user_by_email, create_user
-from app.crud.request import get_requests, create_request
+from app.crud.request import get_requests, create_request, get_request
 from app.schemas.user import User, UserCreate
 from app.schemas.request import Request, RequestCreate
 from app.database import Base, SessionLocal, engine
@@ -53,3 +53,14 @@ def create_request_for_user(
 def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     items = get_requests(db, skip=skip, limit=limit)
     return items
+
+
+@app.get("/{mock_endpoint:path}")
+@app.post("/{mock_endpoint:path}")
+def read_request_response(
+    mock_endpoint: str, user_id: int, db: Session = Depends(get_db)
+):
+    request = get_request(db, user_id, endpoint=mock_endpoint)
+    if not request:
+        raise HTTPException(status_code=404, detail="Request not found")
+    return request.response
