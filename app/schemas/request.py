@@ -1,6 +1,6 @@
 from typing import Any
 
-from pydantic import BaseModel, Json
+from pydantic import BaseModel, Field, Json
 
 
 class RequestBase(BaseModel):
@@ -8,7 +8,18 @@ class RequestBase(BaseModel):
 
 
 class RequestCreate(RequestBase):
-    response: Json
+    response: Json = Field(
+        title="Mock Response",
+        description="Response that will be returned when calling the endpoint",
+    )
+
+    class Config:
+        schema_extra = {
+                "example": {
+                    "endpoint":  "/api/v1",
+                    "response": '{"test": 1}'
+                    }
+                }
 
 
 class Request(RequestBase):
