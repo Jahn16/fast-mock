@@ -5,10 +5,8 @@ from jose import JWTError, jwt
 
 from app.database import SessionLocal
 from app.schemas.token import TokenData
-from app.security import SECRET_KEY, ALGORITHM
+from app.security import SECRET_KEY, ALGORITHM, oauth2_scheme
 from app.crud.user import get_user
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 def get_db():
