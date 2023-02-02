@@ -16,9 +16,3 @@ def create_request_for_user(
     db: Session = Depends(get_db),
 ):
     return crud_request.create_request(db=db, request=request, user_id=user.id)
-
-
-@router.get("/get", response_model=list[Request])
-def read_requests(db: Session = Depends(get_db)):
-    requests = crud_request.get_requests(db)
-    return requests
