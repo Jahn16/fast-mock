@@ -15,11 +15,12 @@ class RequestCreate(RequestBase):
 
     class Config:
         schema_extra = {
-                "example": {
-                    "endpoint":  "/api/v1",
-                    "response": '{"test": 1}'
-                    }
-                }
+            "example": {"endpoint": "/api/v1", "response": '{"test": 1}'}
+        }
+
+
+class RequestUpdate(RequestCreate):
+    pass
 
 
 class Request(RequestBase):
