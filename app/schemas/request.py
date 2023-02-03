@@ -11,6 +11,7 @@ class RequestCreate(RequestBase):
     response: Json = Field(
         title="Mock Response",
         description="Response that will be returned when calling the endpoint",
+        default=...,
     )
 
     class Config:
@@ -20,7 +21,8 @@ class RequestCreate(RequestBase):
 
 
 class RequestUpdate(RequestCreate):
-    pass
+    endpoint: str | None
+    response: Json | None
 
 
 class Request(RequestBase):
