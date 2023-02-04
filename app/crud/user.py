@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from app.models.user import User
-from app.schemas.user import UserCreate
+from app.schemas.user import UserCreate, UserUpdate
 from app.security import verify_password, get_password_hash
 
 
@@ -25,6 +25,19 @@ def create_user(db: Session, user: UserCreate):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+
+def update_user(db: Session, user_in: UserUpdate, user_id: int):
+    data = user_in.dict(exclude_unset=True)
+    if "password" in data:
+        data["hashed_password"] = get_password_hash(data.pop("password"))
+    db.query(User).filter(User.id == user_id).update(data)
+    db.commit()
+
+
+def delete_user(db: Session, user: User):
+    db.delete(user)
+    db.commit()
 
 
 def authenticate_user(db, username: str, password: str):

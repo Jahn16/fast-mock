@@ -11,6 +11,11 @@ class UserCreate(UserBase):
     password: str
 
 
+class UserUpdate(UserBase):
+    email: EmailStr | None
+    password: str | None
+
+
 class User(UserBase):
     id: int
     requests: list[Request] = []
