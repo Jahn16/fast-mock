@@ -41,3 +41,8 @@ def update_request(
         .update(request_in.dict(exclude_unset=True))
     )
     db.commit()
+
+
+def delete_request(db: Session, request: Request):
+    db.delete(request)
+    db.commit()
