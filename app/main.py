@@ -5,4 +5,4 @@ from app.config import settings
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
-app.include_router(api_router, prefix="/api/v1")
+app.include_router(api_router)
