@@ -7,7 +7,6 @@ from alembic import context
 
 import os
 from dotenv import load_dotenv
-
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -27,7 +26,6 @@ from app import models  # noqa
 from app.database import Base  # noqa
 
 target_metadata = Base.metadata
-
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")

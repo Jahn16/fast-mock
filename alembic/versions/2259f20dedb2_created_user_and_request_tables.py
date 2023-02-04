@@ -1,16 +1,16 @@
-"""Added users and request table
+"""created user and request tables
 
-Revision ID: 535747a95cb5
+Revision ID: 2259f20dedb2
 Revises: 
-Create Date: 2023-02-04 11:16:20.971541
+Create Date: 2023-02-04 13:32:55.290527
 
 """
 from alembic import op
 import sqlalchemy as sa
-
+from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '535747a95cb5'
+revision = '2259f20dedb2'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -29,7 +29,7 @@ def upgrade() -> None:
     op.create_table('requests',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('endpoint', sa.String(), nullable=True),
-    sa.Column('response', sa.JSON(), nullable=True),
+    sa.Column('response', postgresql.JSONB(astext_type=sa.Text()), nullable=True),
     sa.Column('owner_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
