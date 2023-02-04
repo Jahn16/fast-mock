@@ -111,6 +111,7 @@ env.bak/
 venv.bak/
 
 # Spyder project settings
+SQLALCHEMY_DATABASE_URL="sqlite:///./sql_app.db"
 .spyderproject
 .spyproject
 
@@ -127,3 +128,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+*.db
