@@ -27,6 +27,13 @@ def create_request(
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
+    db_request = crud_request.get_request(
+        db=db, user_id=user.id, endpoint=request.endpoint
+    )
+    if db_request:
+        raise HTTPException(
+            status_code=400, detail="Endpoint already registered"
+        )
     return crud_request.create_request(db=db, request=request, user_id=user.id)
 
 
