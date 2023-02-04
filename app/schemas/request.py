@@ -16,7 +16,7 @@ class RequestCreate(RequestBase):
 
     class Config:
         schema_extra = {
-            "example": {"endpoint": "/api/v1", "response": '{"test": 1}'}
+            "example": {"endpoint": "api/v1", "response": '{"test": 1}'}
         }
 
 
@@ -28,7 +28,7 @@ class RequestUpdate(RequestCreate):
 class Request(RequestBase):
     id: int
     owner_id: int
-    response: Any
+    response: dict | Any
 
     class Config:
         orm_mode = True

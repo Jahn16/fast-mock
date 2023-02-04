@@ -30,7 +30,7 @@ def create_request(
     return crud_request.create_request(db=db, request=request, user_id=user.id)
 
 
-@router.put("/update")
+@router.put("/update", response_model=Request)
 def update_request(
     request_id: int,
     request_in: RequestUpdate,
@@ -44,7 +44,7 @@ def update_request(
     return updated_request
 
 
-@router.delete("/delete")
+@router.delete("/delete", response_model=Request)
 def delete_request(
     request_id: int,
     user: User = Depends(get_current_user),

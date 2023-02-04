@@ -13,8 +13,8 @@ router = APIRouter()
 def read_request_response(
     mock_endpoint: str,
     user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
-):
+    db: Session = Depends(get_db)
+) -> dict:
     request = get_request(db, user.id, endpoint=mock_endpoint)
     if not request:
         raise HTTPException(status_code=404, detail="Request not found")
