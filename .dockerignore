@@ -1,0 +1,6 @@
+*
+
+!app
+!requirements.txt
+!alembic*
+!boot.sh
