@@ -15,3 +15,4 @@ class Request(Base):
     url_id = Column(UUID, ForeignKey("urls.id"))
 
     owner = relationship("User", back_populates="requests")
+    url = relationship("URL", back_populates="requests")
