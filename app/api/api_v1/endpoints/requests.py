@@ -5,6 +5,7 @@ from app.api.deps import get_db, get_current_user
 from app.schemas.request import Request, RequestCreate, RequestUpdate
 from app.schemas.user import User
 from app.crud import request as crud_request
+from app.crud import url as crud_url
 
 router = APIRouter()
 
@@ -27,14 +28,12 @@ def create_request(
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    db_request = crud_request.get_request(
-        db=db, user_id=user.id, endpoint=request.endpoint
+    db_url = crud_url.get_url(db, request.url)
+    if not db_url:
+        db_url = crud_url.create_url(db, request.url)
+    return crud_request.create_request(
+        db=db, request=request, user_id=user.id, url_id=str(db_url.id)
     )
-    if db_request:
-        raise HTTPException(
-            status_code=400, detail="Endpoint already registered"
-        )
-    return crud_request.create_request(db=db, request=request, user_id=user.id)
 
 
 @router.put("/update", response_model=Request)
