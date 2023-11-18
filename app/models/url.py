@@ -9,7 +9,7 @@ class URL(Base):
     __tablename__ = "urls"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    netloc = Column(String, index=True)
+    hostname = Column(String, index=True)
     requests = relationship("Request", back_populates="url")
 
 
