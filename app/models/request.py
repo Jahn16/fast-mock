@@ -1,5 +1,5 @@
 from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import relationship
 
 from app.database import Base
@@ -12,5 +12,6 @@ class Request(Base):
     endpoint = Column(String, index=True)
     response = Column(JSONB, index=True)
     owner_id = Column(Integer, ForeignKey("users.id"))
+    url_id = Column(UUID, ForeignKey("urls.id"))
 
     owner = relationship("User", back_populates="requests")
