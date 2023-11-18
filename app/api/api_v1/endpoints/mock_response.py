@@ -1,6 +1,7 @@
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi import Request as StarletteRequest
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_db, get_current_user
@@ -14,10 +15,12 @@ router = APIRouter()
 @router.post("/{mock_endpoint:path}")
 def read_request_response(
     mock_endpoint: str,
-    user: User = Depends(get_current_user),
+    starlette_request: StarletteRequest,
     db: Session = Depends(get_db),
 ) -> dict | Any:
-    request = get_request(db, user.id, endpoint=mock_endpoint)
+    hostname = starlette_request.url.hostname or ""
+    url_id = hostname.split(".")[0]
+    request = get_request(db, url_id, endpoint=f"/{mock_endpoint}")
     if not request:
         raise HTTPException(status_code=404, detail="Request not found")
     return request.response
