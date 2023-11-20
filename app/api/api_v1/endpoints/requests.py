@@ -32,9 +32,9 @@ def create_request(
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    db_url = crud_url.get_url(db, request.url)
+    db_url = crud_url.get_url(db, request.url, user.id)
     if not db_url:
-        db_url = crud_url.create_url(db, request.url)
+        db_url = crud_url.create_url(db, request.url, user.id)
         logger.info(f"Created url for {request.url}", url_id=db_url.id)
     request = crud_request.create_request(
         db=db, request=request, user_id=user.id, url_id=str(db_url.id)
