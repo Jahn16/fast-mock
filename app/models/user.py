@@ -12,3 +12,4 @@ class User(Base):
     hashed_password = Column(String)
 
     requests = relationship("Request", back_populates="owner")
+    urls = relationship("URL", back_populates="owner")
