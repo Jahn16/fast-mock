@@ -19,8 +19,7 @@ COPY --chown=user:user . .
 USER 999
 
 ENV PATH="/usr/app/venv/bin:$PATH"
-ENV FLASK_APP="app/app.py"
-
-
 EXPOSE 5000
+
+
 ENTRYPOINT ["./boot.sh"]
