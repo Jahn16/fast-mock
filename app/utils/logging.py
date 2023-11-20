@@ -16,7 +16,6 @@ def disable_uvicorn_logs() -> None:
 
 
 def configure_structlog() -> None:
-    # logging.basicConfig(level=logging.DEBUG)
     shared_processors = [
         # Processors that have nothing to do with output,
         # e.g., add timestamps or log level names.
