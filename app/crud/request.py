@@ -1,10 +1,19 @@
+import uuid
 from sqlalchemy.orm import Session
 
 from app.schemas.request import RequestCreate, RequestUpdate
 from app.models.request import Request
 
 
-def get_request_by_id(db: Session, request_id: int, user_id: int) -> Request:
+def validate_uuid(value: str):
+    try:
+        uuid.UUID(value)
+    except ValueError:
+        return False
+    return True
+
+
+def get_request_by_id(db: Session, request_id: int, user_id: int) -> Request | None:
     return (
         db.query(Request)
         .filter(Request.owner_id == user_id, Request.id == request_id)
@@ -12,8 +21,9 @@ def get_request_by_id(db: Session, request_id: int, user_id: int) -> Request:
     )
 
 
-def get_request(db: Session, url_id: str, endpoint: str) -> Request:
-    print(url_id)
+def get_request(db: Session, url_id: str, endpoint: str) -> Request | None:
+    if not validate_uuid(url_id):
+        return
     return (
         db.query(Request)
         .filter(Request.url_id == url_id, Request.endpoint == endpoint)
@@ -25,7 +35,9 @@ def get_requests(db: Session, skip: int = 0, limit: int = 100):
     return db.query(Request).offset(skip).limit(limit).all()
 
 
-def create_request(db: Session, request: RequestCreate, user_id: int, url_id: str):
+def create_request(
+    db: Session, request: RequestCreate, user_id: int, url_id: str
+):
     db_request = Request(
         endpoint=request.url.path,
         response=request.response,
@@ -38,7 +50,9 @@ def create_request(db: Session, request: RequestCreate, user_id: int, url_id: st
     return db_request
 
 
-def update_request(db: Session, request_in: Request, request_id: int, user_id: int):
+def update_request(
+    db: Session, request_in: Request, request_id: int, user_id: int
+):
     (
         db.query(Request)
         .filter(Request.owner_id == user_id, Request.id == request_id)
