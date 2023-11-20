@@ -19,7 +19,7 @@ COPY --chown=fastmock:fastmock . .
 USER 999
 
 ENV PATH="/usr/app/venv/bin:$PATH"
-EXPOSE 5000
+EXPOSE 8000
 
 
 ENTRYPOINT ["./boot.sh"]
