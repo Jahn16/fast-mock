@@ -10,7 +10,7 @@ class Request(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     endpoint = Column(String, index=True)
-    response = Column(JSONB, index=True)
+    response = Column(JSONB, index=False)
     owner_id = Column(Integer, ForeignKey("users.id"))
     url_id = Column(UUID, ForeignKey("urls.id"))
 
