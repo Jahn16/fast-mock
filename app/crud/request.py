@@ -3,6 +3,38 @@ from sqlalchemy.orm import Session
 
 from app.schemas.request import RequestCreate, RequestUpdate
 from app.models.request import Request
+from urllib.parse import parse_qs
+
+
+def match_best_request(requests: list[Request], parameters: str) -> Request:
+    if not requests:
+        raise ValueError("Need at least 1 request to match")
+
+    desired_parameters = parse_qs(parameters)
+
+    def matching_score(request: Request) -> int:
+        request_parameters = parse_qs(str(request.parameters))
+        if not desired_parameters:
+            return 100 // (len(request_parameters) + 1)
+        score = 0
+        for key, value in request_parameters.items():
+            if desired_parameters.get(key) == value:
+                score += 1
+        percentage = (
+            round(score / len(request_parameters) * 100)
+            if request_parameters
+            else 0
+        )
+        return percentage
+
+    max_score = -1
+    best_request = requests[0]
+    for request in requests:
+        score = matching_score(request)
+        if score > max_score:
+            max_score = score
+            best_request = request
+    return best_request
 
 
 def validate_uuid(value: str):
@@ -13,7 +45,9 @@ def validate_uuid(value: str):
     return True
 
 
-def get_request_by_id(db: Session, request_id: int, user_id: int) -> Request | None:
+def get_request_by_id(
+    db: Session, request_id: int, user_id: int
+) -> Request | None:
     return (
         db.query(Request)
         .filter(Request.owner_id == user_id, Request.id == request_id)
@@ -21,13 +55,17 @@ def get_request_by_id(db: Session, request_id: int, user_id: int) -> Request | N
     )
 
 
-def get_request(db: Session, url_id: str, endpoint: str) -> Request | None:
+def filter_requests(
+    db: Session, url_id: str, method: str, endpoint: str
+) -> list[Request]:
     if not validate_uuid(url_id):
-        return
-    return (
-        db.query(Request)
-        .filter(Request.url_id == url_id, Request.endpoint == endpoint)
-        .first()
+        return []
+    return list(
+        db.query(Request).filter(
+            Request.url_id == url_id,
+            Request.method == method,
+            Request.endpoint == endpoint,
+        )
     )
 
 
@@ -39,8 +77,11 @@ def create_request(
     db: Session, request: RequestCreate, user_id: int, url_id: str
 ):
     db_request = Request(
+        method=request.method,
         endpoint=request.url.path,
+        parameters=request.url.query or "",
         response=request.response,
+        status_code=request.status_code,
         owner_id=user_id,
         url_id=url_id,
     )
