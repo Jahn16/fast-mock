@@ -5,6 +5,7 @@ from pydantic import UUID4, BaseModel, Field, HttpUrl, Json
 
 class RequestBase(BaseModel):
     method: Literal["GET", "POST", "PUT", "PATCH", "DELETE"]
+    status_code: int = Field(ge=100, le=511, default=...)
 
 
 class RequestCreate(RequestBase):
@@ -20,13 +21,15 @@ class RequestCreate(RequestBase):
             "example": {
                 "method": "GET",
                 "url": "https://example.com/path?param1=foo&param2=bar",
+                "status_code": 200,
                 "response": '{"test": 1}',
             }
         }
 
 
 class RequestUpdate(RequestBase):
-    method: str | None
+    method: Literal["GET", "POST", "PUT", "PATCH", "DELETE"] | None
+    status_code: int | None = Field(ge=100, le=511, default=None)
     endpoint: str | None
     parameters: str | None
     response: Json | None
@@ -34,8 +37,10 @@ class RequestUpdate(RequestBase):
     class Config:
         schema_extra = {
             "example": {
+                "method": "GET",
                 "endpoint": "/path",
                 "parameters": "param1=foo&param2=bar",
+                "status_code": 200,
                 "response": '{"test": 1}',
             }
         }

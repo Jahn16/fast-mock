@@ -29,7 +29,6 @@ def match_best_request(requests: list[Request], parameters: str) -> Request:
 
     max_score = -1
     best_request = requests[0]
-    logger.debug(desired_parameters)
     for request in requests:
         score = matching_score(request)
         if score > max_score:
@@ -82,6 +81,7 @@ def create_request(
         endpoint=request.url.path,
         parameters=request.url.query or "",
         response=request.response,
+        status_code=request.status_code,
         owner_id=user_id,
         url_id=url_id,
     )
