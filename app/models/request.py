@@ -12,6 +12,7 @@ class Request(Base):
     endpoint = Column(String, index=True)
     method = Column(String, index=True)
     parameters = Column(String)
+    status_code = Column(Integer)
     response = Column(JSONB, index=False)
     owner_id = Column(Integer, ForeignKey("users.id"))
     url_id = Column(UUID, ForeignKey("urls.id"))
