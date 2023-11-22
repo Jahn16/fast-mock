@@ -13,30 +13,52 @@
 
 
 Fast Mock is a very simple HTTP server mock, built using Fast API.
-## Documentation
 
-[Fast Mock - Swagger UI](http://fastmock.jahn.host/docs)
+![screencapture-localhost-8000-docs-2023-11-22-08_46_57](https://github.com/Jahn16/fast-mock/assets/40438992/f16758e7-2c8d-459c-b321-7c59ff9aaaee)
 
 
 ## Usage/Examples
 
-Curl
+Create a mock request
+
 ```
-curl -X 'GET' \
-  'http://fastmock.jahn.host/endpoint%2Fyou%2Fwant%2Fmocked' \
-  -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzU2MDY0MjQsInN1YiI6IjEifQ.qhx1Ul3gfyby2pdLKUZj0S-9g8_Rsuq50ILksvs_FMc'
+curl --location 'fastmock.your-domain.com:8000/requests/create' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <your-token>' \
+--data '{
+  "method": "GET",
+  "url": "https://example.com/path?param1=foo&param2=bar",
+  "status_code": 200,
+  "response": "{\"test\": 1}"
+}'
 ```
 Response Body
 ```json
 {
-  "response": {
-    "youWantMocked": "valueYouWant"
-  }
+    "method": "GET",
+    "status_code": 200,
+    "id": 1,
+    "endpoint": "/path",
+    "parameters": "param1=foo&param2=bar",
+    "owner_id": 1,
+    "url_id": "8f5350fb-f63e-4795-889b-9060916eca75",
+    "response": {
+        "test": 1
+    }
 }
 ```
 
-
+Retrieve the mocked response
+```
+curl --location '<url-id-from-previous-step>.your-domain.com:8000/path?param1=foo&param2=bar' \
+--header 'Content-Type: application/json'
+```
+Response Body
+```json
+{
+    "test": 1
+}
+```
 ## Run Locally
 
 Clone the project
