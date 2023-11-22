@@ -15,7 +15,10 @@ logger = structlog.get_logger()
 
 @router.get("/{mock_endpoint:path}")
 @router.post("/{mock_endpoint:path}")
-def read_request_response(
+@router.put("/{mock_endpoint:path}")
+@router.patch("/{mock_endpoint:path}")
+@router.delete("/{mock_endpoint:path}")
+def return_mocked_response(
     mock_endpoint: str,
     starlette_request: StarletteRequest,
     db: Session = Depends(get_db),
