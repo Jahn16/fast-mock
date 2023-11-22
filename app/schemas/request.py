@@ -1,10 +1,10 @@
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import UUID4, BaseModel, Field, HttpUrl, Json
 
 
 class RequestBase(BaseModel):
-    pass
+    method: Literal["GET", "POST", "PUT", "PATCH", "DELETE"]
 
 
 class RequestCreate(RequestBase):
@@ -17,23 +17,34 @@ class RequestCreate(RequestBase):
 
     class Config:
         schema_extra = {
-            "example": {"url": "https://example.com/path", "response": '{"test": 1}'}
+            "example": {
+                "method": "GET",
+                "url": "https://example.com/path?param1=foo&param2=bar",
+                "response": '{"test": 1}',
+            }
         }
 
 
 class RequestUpdate(RequestBase):
+    method: str | None
     endpoint: str | None
+    parameters: str | None
     response: Json | None
 
     class Config:
         schema_extra = {
-            "example": {"endpoint": "/path", "response": '{"test": 1}'}
+            "example": {
+                "endpoint": "/path",
+                "parameters": "param1=foo&param2=bar",
+                "response": '{"test": 1}',
+            }
         }
 
 
 class Request(RequestBase):
     id: int
     endpoint: str
+    parameters: str = ""
     owner_id: int
     url_id: UUID4
     response: dict | Any
