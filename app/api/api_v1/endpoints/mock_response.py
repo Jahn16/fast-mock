@@ -6,7 +6,7 @@ from fastapi import Request as StarletteRequest
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_db
-from app.crud.request import get_request
+from app.crud.request import filter_requests, match_best_request
 
 router = APIRouter()
 logger = structlog.get_logger()
@@ -21,10 +21,18 @@ def read_request_response(
 ) -> dict | Any:
     hostname = starlette_request.url.hostname or ""
     url_id = hostname.split(".")[0]
-    request = get_request(db, url_id=url_id, endpoint=f"/{mock_endpoint}")
-    if not request:
+    requests = filter_requests(
+        db,
+        url_id=url_id,
+        method=starlette_request.method,
+        endpoint=f"/{mock_endpoint}",
+    )
+    if not requests:
         logger.info("Request not found", url_id=url_id)
         raise HTTPException(status_code=404, detail="Request not found")
+
+    logger.debug(str(starlette_request.query_params))
+    request = match_best_request(requests, str(starlette_request.query_params))
     logger.info(
         "Sending mocked response for request",
         request_id=request.id,
