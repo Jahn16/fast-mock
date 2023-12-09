@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.api.api_v1.endpoints import user, requests, login, mock_response
+from app.api.api_v1.endpoints import login, mock_response, requests, user
 
 api_router = APIRouter()
 api_router.include_router(login.router, prefix="/token", tags=["login"])

@@ -1,7 +1,7 @@
 from typing import Any
 
 import structlog
-from fastapi import Response, Request
+from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 
 logger = structlog.get_logger(__name__)

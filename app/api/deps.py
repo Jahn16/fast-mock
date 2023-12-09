@@ -1,12 +1,12 @@
-from fastapi import HTTPException, Depends
-from sqlalchemy.orm import Session
-from jose.jwt import JWTError
 import structlog
+from fastapi import Depends, HTTPException
+from jose.jwt import JWTError
+from sqlalchemy.orm import Session
 
+from app.crud.user import get_user
 from app.database import SessionLocal
 from app.schemas.token import TokenData
-from app.security import oauth2_scheme, decode_token
-from app.crud.user import get_user
+from app.security import decode_token, oauth2_scheme
 
 logger = structlog.get_logger()
 

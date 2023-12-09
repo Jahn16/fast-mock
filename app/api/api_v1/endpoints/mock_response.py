@@ -2,8 +2,8 @@ from typing import Any
 
 import structlog
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import JSONResponse
 from fastapi import Request as StarletteRequest
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_db
@@ -42,4 +42,6 @@ def return_mocked_response(
         request_id=request.id,
         url_id=url_id,
     )
-    return JSONResponse(status_code=int(request.status_code), content=request.response)
+    return JSONResponse(
+        status_code=int(request.status_code), content=request.response
+    )

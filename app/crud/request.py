@@ -1,9 +1,10 @@
 import uuid
+from urllib.parse import parse_qs
+
 from sqlalchemy.orm import Session
 
-from app.schemas.request import RequestCreate, RequestUpdate
 from app.models.request import Request
-from urllib.parse import parse_qs
+from app.schemas.request import RequestCreate, RequestUpdate
 
 
 def match_best_request(requests: list[Request], parameters: str) -> Request:

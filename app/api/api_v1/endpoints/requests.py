@@ -2,11 +2,11 @@ import structlog
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_db, get_current_user
-from app.schemas.request import Request, RequestCreate, RequestUpdate
-from app.schemas.user import User
+from app.api.deps import get_current_user, get_db
 from app.crud import request as crud_request
 from app.crud import url as crud_url
+from app.schemas.request import Request, RequestCreate, RequestUpdate
+from app.schemas.user import User
 
 router = APIRouter()
 logger = structlog.get_logger()

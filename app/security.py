@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 
 from fastapi.security import OAuth2PasswordBearer
-from passlib.context import CryptContext
 from jose import jwt
+from passlib.context import CryptContext
 
 from app.config import settings
 

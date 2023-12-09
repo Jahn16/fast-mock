@@ -1,11 +1,10 @@
-from fastapi import APIRouter, HTTPException, Depends
-from sqlalchemy.orm import Session
 import structlog
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
 
-from app.api.deps import get_db, get_current_user
-from app.schemas.user import User, UserCreate, UserUpdate
+from app.api.deps import get_current_user, get_db
 from app.crud import user as crud_user
-
+from app.schemas.user import User, UserCreate, UserUpdate
 
 router = APIRouter()
 logger = structlog.get_logger()
