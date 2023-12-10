@@ -4,7 +4,7 @@ from urllib.parse import parse_qs
 from sqlalchemy.orm import Session
 
 from app.models.request import Request
-from app.schemas.request import RequestCreate, RequestUpdate
+from app.schemas.request import RequestCreate
 
 
 def match_best_request(requests: list[Request], parameters: str) -> Request:
