@@ -20,4 +20,4 @@ repos:
         additional_dependencies:
           - pydantic~=2.0
           - sqlalchemy~=2.0
-        exclude: tests/
+        exclude: alembic
