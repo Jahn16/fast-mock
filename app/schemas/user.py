@@ -13,7 +13,7 @@ class UserCreate(UserBase):
 
 
 class UserUpdate(UserBase):
-    email: EmailStr | None
+    email: EmailStr | None  # type: ignore[assignment]
     password: str | None
 
 

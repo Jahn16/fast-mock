@@ -41,6 +41,6 @@ def configure_structlog() -> None:
             structlog.processors.JSONRenderer(),
         ]
     structlog.configure(
-        processors,
+        processors,  # type: ignore[arg-type]
         wrapper_class=structlog.make_filtering_bound_logger(log_level),
     )

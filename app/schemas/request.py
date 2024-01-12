@@ -10,7 +10,7 @@ class RequestBase(BaseModel):
 
 class RequestCreate(RequestBase):
     url: HttpUrl
-    response: Json = Field(
+    response: Json[Any] = Field(
         title="Mock Response",
         description="Response that will be returned when calling the endpoint",
         default=...,
@@ -28,11 +28,11 @@ class RequestCreate(RequestBase):
 
 
 class RequestUpdate(RequestBase):
-    method: Literal["GET", "POST", "PUT", "PATCH", "DELETE"] | None
-    status_code: int | None = Field(ge=100, le=511, default=None)
+    method: Literal["GET", "POST", "PUT", "PATCH", "DELETE"] | None  # type: ignore[assignment] # noqa: E501
+    status_code: int | None = Field(ge=100, le=511, default=None)  # type: ignore[assignment] # noqa: E501
     endpoint: str | None
     parameters: str | None
-    response: Json | None
+    response: Json[Any] | None
 
     class Config:
         schema_extra = {
@@ -52,7 +52,7 @@ class Request(RequestBase):
     parameters: str = ""
     owner_id: int
     url_id: UUID4
-    response: dict | Any
+    response: dict[Any, Any] | Any
 
     class Config:
         orm_mode = True

@@ -38,7 +38,7 @@ def match_best_request(requests: list[Request], parameters: str) -> Request:
     return best_request
 
 
-def validate_uuid(value: str):
+def validate_uuid(value: str) -> bool:
     try:
         uuid.UUID(value)
     except ValueError:
@@ -70,13 +70,15 @@ def filter_requests(
     )
 
 
-def get_requests(db: Session, skip: int = 0, limit: int = 100):
+def get_requests(
+    db: Session, skip: int = 0, limit: int = 100
+) -> list[Request]:
     return db.query(Request).offset(skip).limit(limit).all()
 
 
 def create_request(
     db: Session, request: RequestCreate, user_id: int, url_id: str
-):
+) -> Request:
     db_request = Request(
         method=request.method,
         endpoint=request.url.path,
@@ -84,7 +86,7 @@ def create_request(
         response=request.response,
         status_code=request.status_code,
         owner_id=user_id,
-        url_id=url_id,
+        url_id=url_id,  # type: ignore
     )
     db.add(db_request)
     db.commit()
@@ -94,15 +96,15 @@ def create_request(
 
 def update_request(
     db: Session, request_in: Request, request_id: int, user_id: int
-):
+) -> None:
     (
         db.query(Request)
         .filter(Request.owner_id == user_id, Request.id == request_id)
-        .update(request_in.dict(exclude_unset=True))
+        .update(request_in.dict(exclude_unset=True))  # type: ignore[attr-defined] # noqa: E501
     )
     db.commit()
 
 
-def delete_request(db: Session, request: Request):
+def delete_request(db: Session, request: Request) -> None:
     db.delete(request)
     db.commit()
